@@ -26,23 +26,9 @@
       <email>mrxccc@qq.com</email>
     </developer>
   </developers>
-  <properties>
-    <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-  </properties>
-  <dependencyManagement>
-    <dependencies>
-      <!-- Spring Cloud -->
-      <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring-cloud.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <modules>
     <!-- 工程模块请随着项目的不断完善自行添加 -->
     <module>spring-security-oauth2-server</module>
+    <module>spring-security-oauth2-resource</module>
   </modules>
 </project>

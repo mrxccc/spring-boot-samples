@@ -9,7 +9,8 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>spring-security-oauth2-server</artifactId>
+  <artifactId>spring-security-oauth2-resource</artifactId>
+
   <packaging>jar</packaging>
   <url>http://blog.mrxccc.com</url>
   <licenses>
@@ -83,7 +84,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <mainClass>cn.mrxccc.oauth2.server.OAuth2ServerApplication</mainClass>
+          <mainClass>cn.mrxccc.oauth2.resource.OAuth2ResourceApplication</mainClass>
         </configuration>
       </plugin>
     </plugins>
