@@ -4,6 +4,6 @@ import cn.mrxccc.oauth2.resource.domain.TbContent;
 import java.util.List;
 
 public interface TbContentService{
-    public List<TbContent> selectAll();
+    List<TbContent> selectAll();
 
 }
