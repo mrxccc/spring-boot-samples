@@ -13,6 +13,9 @@
     <!-- 工程模块请随着项目的不断完善自行添加 -->
     <module>spring-boot-samples-dependencies</module>
     <module>spring-security-oauth2</module>
+    <module>jdbcTemplate-multiple-datasource</module>
+    <module>mybatis-multiple-datasoure</module>
+    <module>aop-log</module>
   </modules>
 
   <properties>

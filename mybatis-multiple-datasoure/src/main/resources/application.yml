@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    # 数据源1
+    local:
+      driver-class-name: org.mariadb.jdbc.Driver
+      jdbc-url: jdbc:mariadb://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/test?characterEncoding=utf-8&allowMultiQueries=true
+      username: ${MYSQL_USERNAME:root}
+      password: ${MYSQL_PASSWORD:PcJXU1h707v}
+    # 数据源2
+    remote:
+      driver-class-name: org.mariadb.jdbc.Driver
+      jdbc-url: jdbc:mariadb://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/test2?characterEncoding=utf-8&allowMultiQueries=true
+      username: ${MYSQL_USERNAME:root}
+      password: ${MYSQL_PASSWORD:PcJXU1h707v}
+    # hikari数据链接池
+    hikari:
+      minimum-idle: 5
+      idle-timeout: 600000
+      maximum-pool-size: 10
+      auto-commit: true
+      pool-name: MyHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1

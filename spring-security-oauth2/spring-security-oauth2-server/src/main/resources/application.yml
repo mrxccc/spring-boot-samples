@@ -4,7 +4,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.mariadb.jdbc.Driver
-    jdbc-url: jdbc:mariadb://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/oauth2?characterEncoding=utf-8&allowMultiQueries=true
+    url: jdbc:mariadb://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/oauth2?characterEncoding=utf-8&allowMultiQueries=true
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:YAkZW8z0rru}
     hikari:
