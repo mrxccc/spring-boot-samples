@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    # hikari数据链接池
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/test2?characterEncoding=utf-8&allowMultiQueries=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:PcJXU1h707v}
+    hikari:
+      minimum-idle: 5
+      idle-timeout: 600000
+      maximum-pool-size: 10
+      auto-commit: true
+      pool-name: MyHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  redis:
+      # Redis数据库索引（默认为0）
+      database: 0
+      # Redis服务器地址
+      host: ${REDIS_HOST:127.0.0.1}
+      password: ${REDIS_PASSWORD:PcJXU1h707v}
+      # Redis服务器连接端口
+      port: 6379
+      # 连接超时时间（毫秒）
+      timeout: 5000
+      # 连接池
+      lettuce:
+        pool:
+          # 连接池最大连接数（使用负值表示没有限制）
+          max-active: 8
+          # 连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-wait: -1
+          # 连接池中的最大空闲连接
+          max-idle: 8
+          # 连接池中的最小空闲连接
+          min-idle: 0
+
+logging:
+  level:
+    cn:
+      mrxccc:
+        cache:
+          redis:
+            mapper: debug

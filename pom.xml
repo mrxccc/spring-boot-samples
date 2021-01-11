@@ -16,6 +16,8 @@
     <module>jdbcTemplate-multiple-datasource</module>
     <module>mybatis-multiple-datasoure</module>
     <module>aop-log</module>
+    <module>spring-boot-cache-redis</module>
+      <module>spring-boot-cache-ehcache</module>
   </modules>
 
   <properties>

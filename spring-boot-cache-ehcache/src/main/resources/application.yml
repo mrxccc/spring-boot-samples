@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    # hikari数据链接池
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/test2?characterEncoding=utf-8&allowMultiQueries=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:PcJXU1h707v}
+    hikari:
+      minimum-idle: 5
+      idle-timeout: 600000
+      maximum-pool-size: 10
+      auto-commit: true
+      pool-name: MyHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  cache:
+    ehcache:
+      config: 'classpath:ehcache.xml'
+
+logging:
+  level:
+    cn:
+      mrxccc:
+        cache:
+          ehcache:
+            mapper: debug
