@@ -1,0 +1,17 @@
+server:
+  port: 80
+
+spring:
+  mail:
+    host: smtp.163.com
+    username: ${email_count} # 账号
+    password: ${email_smtp_password} # smtp授权码
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+mrxccc:
+  email_to: mrxccc@qq.com
