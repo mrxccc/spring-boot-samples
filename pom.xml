@@ -18,6 +18,8 @@
     <module>aop-log</module>
     <module>spring-boot-cache-redis</module>
       <module>spring-boot-cache-ehcache</module>
+      <module>spring-boot-actuator</module>
+    <module>spring-boot-mail</module>
   </modules>
 
   <properties>
