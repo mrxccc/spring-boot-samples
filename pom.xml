@@ -21,6 +21,7 @@
       <module>spring-boot-actuator</module>
     <module>spring-boot-mail</module>
     <module>spring-boot-mongo</module>
+    <module>spring-boot-filter-interceptor</module>
   </modules>
 
   <properties>
@@ -132,6 +133,15 @@
       </build>
     </profile>
   </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
   <repositories>
     <repository>
