@@ -17,12 +17,14 @@
     <module>mybatis-multiple-datasoure</module>
     <module>aop-log</module>
     <module>spring-boot-cache-redis</module>
-      <module>spring-boot-cache-ehcache</module>
-      <module>spring-boot-actuator</module>
+    <module>spring-boot-cache-ehcache</module>
+    <module>spring-boot-actuator</module>
     <module>spring-boot-mail</module>
     <module>spring-boot-mongo</module>
     <module>spring-boot-filter-interceptor</module>
     <module>spring-boot-cross-origin</module>
+    <module>mybatis-mapper-generator</module>
+    <module>spring-boot-validator</module>
   </modules>
 
   <properties>
