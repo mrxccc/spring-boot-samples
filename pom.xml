@@ -25,6 +25,7 @@
     <module>spring-boot-cross-origin</module>
     <module>mybatis-mapper-generator</module>
     <module>spring-boot-validator</module>
+      <module>spring-boot-kafka</module>
   </modules>
 
   <properties>
