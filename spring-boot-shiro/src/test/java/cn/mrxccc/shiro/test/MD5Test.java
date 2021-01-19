@@ -10,7 +10,9 @@ import org.junit.Test;
 public class MD5Test {
     @Test
     public void Test1() {
-        String encrypt = MD5Utils.encrypt("mrxccc", "123456");
-        System.out.println(encrypt);
+        String adminEncrypt = MD5Utils.encrypt("admin", "123456");
+        String testEncrypt = MD5Utils.encrypt("test", "123456");
+        System.out.println("admin:" + adminEncrypt);
+        System.out.println("test:" + testEncrypt);
     }
 }

@@ -16,4 +16,14 @@
     <!--@mbg.generated generated on Tue Jan 19 16:31:04 CST 2021.-->
     id, parent_id, `name`, enname, description, created, updated
   </sql>
+
+   <select id="findByUserId" resultMap="BaseResultMap">
+        SELECT r.*
+            FROM tb_user AS u
+                LEFT JOIN tb_user_role AS ur
+                          ON u.id = ur.user_id
+                LEFT JOIN tb_role AS r
+                          ON r.id = ur.role_id
+            WHERE u.id = #{userId}
+    </select>
 </mapper>
