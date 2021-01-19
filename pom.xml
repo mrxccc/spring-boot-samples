@@ -27,6 +27,7 @@
     <module>spring-boot-validator</module>
       <module>spring-boot-kafka</module>
       <module>spring-boot-websocket</module>
+    <module>spring-boot-shiro</module>
   </modules>
 
   <properties>
