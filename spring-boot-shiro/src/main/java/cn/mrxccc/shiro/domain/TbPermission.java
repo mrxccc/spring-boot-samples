@@ -1,7 +1,13 @@
 package cn.mrxccc.shiro.domain;
 
+import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import lombok.Data;
 
 /**
@@ -9,7 +15,7 @@ import lombok.Data;
  */
 @Data
 @Table(name = "tb_permission")
-public class TbPermission {
+public class TbPermission implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "JDBC")

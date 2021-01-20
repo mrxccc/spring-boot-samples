@@ -65,9 +65,15 @@ public class ShiroRealm extends AuthorizingRealm {
      * 登录认证
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        String userName = (String)token.getPrincipal();
-        String password = new String((char[])token.getCredentials());
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+        //获取用户名密码 第一种方式
+        //String username = (String) authenticationToken.getPrincipal();
+        //String password = new String((char[]) authenticationToken.getCredentials());
+
+        //获取用户名 密码 第二种方式
+        UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
+        String userName = usernamePasswordToken.getUsername();
+        String passWord = new String(usernamePasswordToken.getPassword());
 
         log.info("用户" + userName + "认证-----ShiroRealm.doGetAuthenticationInfo");
         TbUser user = tbUserService.findByUserName(userName);
@@ -75,10 +81,10 @@ public class ShiroRealm extends AuthorizingRealm {
         if (user == null) {
             throw new UnknownAccountException("用户名或密码错误！");
         }
-        if (!password.equals(user.getPassword())) {
+        if (!passWord.equals(user.getPassword())) {
             throw new IncorrectCredentialsException("用户名或密码错误！");
         }
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, passWord, getName());
         return info;
     }
 

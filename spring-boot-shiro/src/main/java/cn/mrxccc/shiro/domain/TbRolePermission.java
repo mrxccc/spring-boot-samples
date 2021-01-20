@@ -1,14 +1,19 @@
 package cn.mrxccc.shiro.domain;
 
-import javax.persistence.*;
 import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * 角色权限表
  */
 @Data
 @Table(name = "tb_role_permission")
-public class TbRolePermission {
+public class TbRolePermission implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "JDBC")

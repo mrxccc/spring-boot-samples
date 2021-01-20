@@ -1,15 +1,20 @@
 package cn.mrxccc.shiro.domain;
 
-import java.util.Date;
-import javax.persistence.*;
 import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 用户表
  */
 @Data
 @Table(name = "tb_user")
-public class TbUser {
+public class TbUser implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "JDBC")
