@@ -99,6 +99,7 @@ public class ShiroConfig {
 //        securityManager.setCacheManager(getEhCacheManager());
         // redis cache
         securityManager.setCacheManager(getRedisCacheManager());
+        securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
 
