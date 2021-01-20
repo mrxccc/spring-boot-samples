@@ -1,5 +1,6 @@
 package cn.mrxccc.shiro.config;
 
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -38,31 +40,49 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        // 设置securityManager
+
+        //必须设置 SecurityManager,Shiro的核心安全接口
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        // 登录的url
-        shiroFilterFactoryBean.setLoginUrl("/login");
-        // 登录成功后跳转的url
+        //这里的/login是后台的接口名,非页面，如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+        shiroFilterFactoryBean.setLoginUrl("/");
+        //这里的/index是后台的接口名,非页面,登录成功后要跳转的链接
         shiroFilterFactoryBean.setSuccessUrl("/index");
-        // 未授权url
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+        //未授权界面,该配置无效，并不会进行页面跳转
+        shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
 
+        //自定义拦截器限制并发人数：
+        LinkedHashMap<String, Filter> filtersMap = new LinkedHashMap<>();
+        //限制同一帐号同时在线的个数
+        filtersMap.put("kickout", kickoutSessionControlFilter());
+        //@TODO 统计登录人数
+        shiroFilterFactoryBean.setFilters(filtersMap);
+
+        // 配置访问权限 必须是LinkedHashMap，因为它必须保证有序
+        // 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 --> : 这是一个坑，一不小心代码就不好使了
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-
-        // 定义filterChain，静态资源不拦截
+        //配置不登录可以访问的资源，anon 表示资源都可以匿名访问
+        //配置记住我或认证通过可以访问的地址
+        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
-        filterChainDefinitionMap.put("/fonts/**", "anon");
         filterChainDefinitionMap.put("/img/**", "anon");
-        // druid数据源监控页面不拦截
-        filterChainDefinitionMap.put("/druid/**", "anon");
-        // 配置退出过滤器，其中具体的退出代码Shiro已经替我们实现了
+        // 如果使用druid，可以打开
+//        filterChainDefinitionMap.put("/druid/**", "anon");
+        //解锁用户专用 测试用的
+        filterChainDefinitionMap.put("/unlockAccount","anon");
+        filterChainDefinitionMap.put("/Captcha.jpg","anon");
+        //logout是shiro提供的过滤器
         filterChainDefinitionMap.put("/logout", "logout");
-        filterChainDefinitionMap.put("/", "anon");
-        // 除上以外所有url都必须认证通过才可以访问，未通过认证自动访问LoginUrl
-        filterChainDefinitionMap.put("/**", "user");
+        //此时访问/user/delete需要delete权限,在自定义Realm中为用户授权。
+        //filterChainDefinitionMap.put("/user/delete", "perms[\"user:delete\"]");
+
+        //其他资源都需要认证  authc 表示需要认证才能进行访问 user表示配置记住我或认证通过可以访问的地址
+        //如果开启限制同一账号登录,改为 .put("/**", "kickout,user");
+        filterChainDefinitionMap.put("/**", "kickout,user");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
         return shiroFilterFactoryBean;
     }
 
@@ -168,8 +188,7 @@ public class ShiroConfig {
      * 若使用需要添加到securityManager中
      * @return
      */
-    @Bean
-    public EhCacheManager getEhCacheManager() {
+    public CacheManager getEhCacheManager() {
         EhCacheManager em = new EhCacheManager();
         em.setCacheManagerConfigFile("classpath:config/shiro-ehcache.xml");
         return em;
@@ -180,7 +199,7 @@ public class ShiroConfig {
      * 若使用需要添加到securityManager中
      * @return
      */
-    private RedisCacheManager getRedisCacheManager() {
+    private CacheManager getRedisCacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisConfig.redisManager());
         //redis中针对不同用户缓存
@@ -272,39 +291,20 @@ public class ShiroConfig {
      * 并发登录控制
      * @return
      */
-//    @Bean
-//    public KickoutSessionControlFilter kickoutSessionControlFilter(){
-//        KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
-//        //用于根据会话ID，获取会话进行踢出操作的；
-//        kickoutSessionControlFilter.setSessionManager(sessionManager());
-//        //使用cacheManager获取相应的cache来缓存用户登录的会话；用于保存用户—会话之间的关系的；
-//        kickoutSessionControlFilter.setCacheManager(cacheManager());
-//        //是否踢出后来登录的，默认是false；即后者登录的用户踢出前者登录的用户；
-//        kickoutSessionControlFilter.setKickoutAfter(false);
-//        //同一个用户最大的会话数，默认1；比如2的意思是同一个用户允许最多同时两个人登录；
-//        kickoutSessionControlFilter.setMaxSession(1);
-//        //被踢出后重定向到的地址；
-//        kickoutSessionControlFilter.setKickoutUrl("/login?kickout=1");
-//        return kickoutSessionControlFilter;
-//    }
-
-    /**
-     * 配置密码比较器
-     * @return
-     */
-//    @Bean("credentialsMatcher")
-//    public RetryLimitHashedCredentialsMatcher retryLimitHashedCredentialsMatcher(){
-//        RetryLimitHashedCredentialsMatcher retryLimitHashedCredentialsMatcher = new RetryLimitHashedCredentialsMatcher(cacheManager());
-//
-//        //如果密码加密,可以打开下面配置
-//        //加密算法的名称
-//        //retryLimitHashedCredentialsMatcher.setHashAlgorithmName("MD5");
-//        //配置加密的次数
-//        //retryLimitHashedCredentialsMatcher.setHashIterations(1024);
-//        //是否存储为16进制
-//        //retryLimitHashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);
-//
-//        return retryLimitHashedCredentialsMatcher;
-//    }
+    @Bean
+    public KickoutSessionControlFilter kickoutSessionControlFilter(){
+        KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
+        //用于根据会话ID，获取会话进行踢出操作的；
+        kickoutSessionControlFilter.setSessionManager(sessionManager());
+        //使用cacheManager获取相应的cache来缓存用户登录的会话；用于保存用户—会话之间的关系的；
+        kickoutSessionControlFilter.setCacheManager(getRedisCacheManager());
+        //是否踢出后来登录的，默认是false；即后者登录的用户踢出前者登录的用户；
+        kickoutSessionControlFilter.setKickoutAfter(false);
+        //同一个用户最大的会话数，默认1；比如2的意思是同一个用户允许最多同时两个人登录；
+        kickoutSessionControlFilter.setMaxSession(1);
+        //被踢出后重定向到的地址；
+        kickoutSessionControlFilter.setKickoutUrl("/login?kickout=1");
+        return kickoutSessionControlFilter;
+    }
 
 }
