@@ -37,6 +37,16 @@ spring:
         max-idle: 8
         # 连接池中的最小空闲连接
         min-idle: 0
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/static/
+  thymeleaf:
+    encoding: UTF-8
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
 server:
   port: 8080
 
